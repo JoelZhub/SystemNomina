@@ -12,7 +12,7 @@ namespace SystemNomina.Models
         private decimal commissionFee;
 
 
-        public EmployeeCommision(string firstName, string partenalSurname, long numberSecuritySocial,
+        public EmployeeCommision(string firstName, string partenalSurname, string numberSecuritySocial,
             decimal grossSales, decimal commissionFee ) :
             base(firstName, partenalSurname, numberSecuritySocial)
         {

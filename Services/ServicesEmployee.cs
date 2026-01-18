@@ -15,17 +15,14 @@ namespace SystemNomina.Services
 
     public class ServicesEmployee
     {
-        static public bool addEmployee(Employee employee) {
-            var em = StorageEmployee.employees().First(e => e.getNumberSecuritySocial() == employee.getNumberSecuritySocial());
-            if (em != null) return false;
-            else StorageEmployee.AddEmployee(employee); return true;
-      }
-
-      
-     
+        static public bool addEmployee(Employee employee)
+        {
+            if (employee == null) return false;
+            return StorageEmployee.AddEmployee(employee);
+        }
 
 
-        
+
 
     }
 }

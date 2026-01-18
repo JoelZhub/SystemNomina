@@ -12,15 +12,15 @@ namespace SystemNomina.Storage
 
     public class StorageEmployee
     {
-        static private List<Employee> _employees;
-        public StorageEmployee()
-        {
-            _employees = new List<Employee>();
-        }
+        static private List<Employee> _employees = new List<Employee>();
         static public bool AddEmployee(Employee employee)
         {
-            if (_employees.Count() == 0) return false;
-            else _employees.Add(employee); return true;
+            if (_employees.Count() > 0)
+            {
+                var existing = _employees.FirstOrDefault(e => e.getNumberSecuritySocial() == employee.getNumberSecuritySocial());
+                if (existing != null) return false;
+            }
+            _employees.Add(employee); return true;
         }
         static public List<Employee> employees()  => _employees;
         

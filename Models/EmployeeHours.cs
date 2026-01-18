@@ -21,8 +21,7 @@ namespace SystemNomina.Models
                 
         }
 
-
-        public EmployeeHours(string firstName, string partenalSurname, long numberSecuritySocial, 
+        public EmployeeHours(string firstName, string partenalSurname, string numberSecuritySocial, 
             double hoursWork, decimal salaryHours) :
             base(firstName, partenalSurname, numberSecuritySocial)
         {

@@ -8,7 +8,7 @@ namespace SystemNomina.Models
     {
         private decimal WeeklySalary;
 
-        public EmployeeSalaried(string firstName, string partenalSurname, long numberSecuritySocial , decimal weeklySalary) :
+        public EmployeeSalaried(string firstName, string partenalSurname, string numberSecuritySocial , decimal weeklySalary) :
             base(firstName, partenalSurname, numberSecuritySocial)
         {
             this.WeeklySalary = weeklySalary;
