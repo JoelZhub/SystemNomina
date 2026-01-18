@@ -22,9 +22,7 @@ namespace SystemNomina.Storage
             if (_employees.Count() == 0) return false;
             else _employees.Add(employee); return true;
         }
-        static public void listEmpleados() {
-            _employees.ForEach(e => Console.WriteLine(e));
-        }
+        static public List<Employee> employees()  => _employees;
         
     }
 }

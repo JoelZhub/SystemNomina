@@ -2,25 +2,30 @@
 using System.Collections.Generic;
 using System.Text;
 using SystemNomina.Models;
+using SystemNomina.Storage;
 
 namespace SystemNomina.Services
 {
-    /* Service de empleados -> se validan los datos de entrada y
-     * se llama el storage para almacenar los empleados en memoria */
+    /* Service de empleados -> 
+     * se llama el storage para almacenar los empleados en memoria
+     * 
+     * nota: desde mi punto de vista y entendimiento no es valido que el view conozca la pila de memoria
+     * eso es como decirle que tenga acceso a la BD del sistema.
+     */
 
     public class ServicesEmployee
     {
-        private bool validateEmployee(Employee employee) {
-            if (employee == null) return false;
-            if(employee.getFirstName() == null || employee.getFirstName().Contains("\\d")) return false;
-            if (employee.getPartenalSurname() == null || employee.getPartenalSurname().Contains("\\d")) return false;
-            if(employee.getNumberSecuritySocial().ToString().Length < 11) return false;
-            return true;
-        }
+        static public bool addEmployee(Employee employee) {
+            var em = StorageEmployee.employees().First(e => e.getNumberSecuritySocial() == employee.getNumberSecuritySocial());
+            if (em != null) return false;
+            else StorageEmployee.AddEmployee(employee); return true;
+      }
 
-        static public bool addEmployee(Employee employee)
-        {
-            return true;
-        }
+      
+     
+
+
+        
+
     }
 }
