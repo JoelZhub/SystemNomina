@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Text;
 using SystemNomina.Storage;
 
@@ -8,27 +9,17 @@ namespace SystemNomina.Models
     public class Reports
     {
 
-        private DateTime creationDate;
-        private DateTime endDate;
-        private Employee employee;
-        private List<Reports> reports = new List<Reports>();
-
-        public Reports(DateTime creationDate, DateTime endDate, Employee employee)
-        {
-            this.creationDate = creationDate;
-            this.endDate = endDate;
-            this.employee = employee;
-        }
+        private DateTime creationDate = DateTime.Now;
+        private DateTime endDate = DateTime.Now.AddDays(7);
+        private decimal totalPay => StorageEmployee.employees().Sum(e => e.CalculateSalary());
+         
         public void createReport()
         {
-            if (StorageEmployee.employees().Count > 0) StorageEmployee.employees().ForEach(e => reports.Add(new Reports(DateTime.Now, creationDate.AddDays(7), e)));
-            else Console.WriteLine("There are no registered employees, so the report cannot be generated.");
-            
+            Console.WriteLine($"Weekly Report from {creationDate}  to {endDate} \n\n ");
+            StorageEmployee.employees().ForEach(e => Console.WriteLine(e.ToString()));
+            Console.WriteLine(string.Format("total to pay: {0:C} \n", totalPay));
+
         }
-        public void PrintReport()
-        {
-            reports.ForEach(r => Console.WriteLine($" Report Week: {r.creationDate} - {r.endDate} \n " +
-                $" Employee report: {r.employee.GetType()} \n {r.employee.ToString()}" ));
-        }
+
     }
 }

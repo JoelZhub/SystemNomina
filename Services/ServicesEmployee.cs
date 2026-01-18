@@ -15,6 +15,8 @@ namespace SystemNomina.Services
 
     public class ServicesEmployee
     {
+
+        
         static public bool addEmployee(Employee employee)
         {
             if (employee == null) return false;
@@ -31,8 +33,23 @@ namespace SystemNomina.Services
             else Console.WriteLine("No registered employees were found.");
         }
 
-
-
-
+        static public void createReport()
+        {
+            Reports reports = new Reports();
+            reports.createReport();
     }
+
+        static public void changeEmployee(string nss, int option, string newVa)
+        {
+            var employee = StorageEmployee.employees().Find(e => e.getNumberSecuritySocial() == nss);
+            if (employee == null) {
+                throw new Exception("Employee not found");
+            }
+            employee.Update(option, newVa);
+
+        }
+
+
+
+}
 }

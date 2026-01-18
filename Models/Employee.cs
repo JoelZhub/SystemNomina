@@ -38,6 +38,8 @@ namespace SystemNomina.Models
                 $"Number Security Social: {this.numberSecuritySocial} ";
         }
 
+        public abstract void Update(int option, string newValue);
+
 
     }
 }

@@ -34,5 +34,30 @@ namespace SystemNomina.Models
             if (this.hoursWork <= 40) return this.salaryHours * (decimal)this.hoursWork;
             else return (this.salaryHours * (decimal)this.hoursWork) + (this.salaryHours * 1.5m * (decimal)(this.hoursWork - 40));
         }
+
+        public override string ToString()
+        {
+            return string.Format("Employee for hours: {0}\n {1}:{2:C}; {3}:{4:C}; ", base.ToString(), "Hourly wage", salaryHours, "hours worked", hoursWork);
+        }
+
+        public override void Update(int option, string newValue)
+        {
+            switch (option)
+            {
+                case 1:
+                    setFirstName(newValue);
+                    break;
+                case 2:
+                    setPartenalSurname(newValue);
+                    break;
+                case 3:
+                    if (!double.TryParse(newValue, out double hour) || hour <= 0)
+                        throw new Exception("The number of working hours is not valid");
+                    setHoursWork(hour);
+                    break;
+
+                default: throw new Exception("This option is not valid for this type of employee");
+            }
+        }
     }
 }

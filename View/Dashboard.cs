@@ -4,6 +4,7 @@ using System.Text;
 using SystemNomina.Models;
 using SystemNomina.Services;
 using SystemNomina.Storage;
+using SystemNomina.Utils;
 
 namespace SystemNomina.View
 {
@@ -14,6 +15,7 @@ namespace SystemNomina.View
           int opt;
             do {
 
+             
              Console.WriteLine("Payroll System \n \n" +
               "1-Register employees \n\n " +
               "2-Calculate employee pay \n\n " +
@@ -27,15 +29,17 @@ namespace SystemNomina.View
                 switch (opt)
                 {
                     case 1:
-                        registerEmployee();
+                        register();
                         break;
 
                     case 2:
                         ServicesEmployee.calculateSalaried();
-                        Console.Clear();
+                       
                         break;
 
                     case 3:
+                        ServicesEmployee.createReport();
+                        
                         break;
 
                     case 4:
@@ -48,11 +52,60 @@ namespace SystemNomina.View
 
      
         }
+        private void register()
+        {
+            Console.WriteLine("Please indicate the action you wish to perform" +
+                " \n 1. Register employees" +
+                " \n 2. Update employee ");
 
+            int opt = validateOption(Convert.ToInt32(Console.ReadLine()));
+            switch (opt) {
+                case 1:
+                    registerEmployee();
+                    break;
+                case 2:
+                    changeEmployye();
+                    break;
+
+                default:
+                    Console.WriteLine("Enter a valid option");
+                    break;
+            }
+
+
+        }
+        private void changeEmployye()
+        {
+            Console.WriteLine("Enter the SSN of the employee to be updated");
+            string nss = Console.ReadLine()!;
+
+            Console.WriteLine("Select the data to update");
+            Console.WriteLine("1. FirstName");
+            Console.WriteLine("2. Partenal Surname");
+            Console.WriteLine("3. Specific details of the type of employee");
+
+            if(!int.TryParse(Console.ReadLine(), out int option))
+            {
+                Console.WriteLine("Invalid option");
+                return;
+            }
+            Console.WriteLine("Enter the new value");
+            string newValue =  Console.ReadLine()!;
+
+            try
+            {
+                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+
+            }     
+        
+        }
 
         private void registerEmployee()
         {
-           
             Console.WriteLine("Please indicate the type of employee to register.");
             Console.WriteLine("1-Salaried employee \n\n 2-Hourly employee\n\n " +
                 "3-Commission-based employee\n\n  4-Salaried commission-based employee\n\n ");
@@ -64,7 +117,7 @@ namespace SystemNomina.View
             Console.WriteLine("Enter the employee's paternalSurname");
             string paternalSurname = Console.ReadLine()!.Trim();
             Console.WriteLine("Enter the employee's social security number");
-            string nss  = Console.ReadLine()!.Trim();
+            string nss = MaskEntrance.ReadMask();
 
             decimal salary = 0;
             decimal fee = 0;
@@ -117,9 +170,6 @@ namespace SystemNomina.View
 
 
         }
-
-
-
         private decimal validateMoney()
         {
             string salary;
@@ -128,7 +178,6 @@ namespace SystemNomina.View
             while (!decimal.TryParse(salary, out m));
             return m;
         }
-
         private int validateOption(int opt)
         { 
             while (opt > 4 || opt <= 0) {

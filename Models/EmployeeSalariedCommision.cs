@@ -21,6 +21,23 @@ namespace SystemNomina.Models
         }
 
         public override decimal CalculateSalary() => base.CalculateSalary() + this.baseSalary + (this.baseSalary + 0.10m);
-        
+
+        public override string ToString()
+        {
+            return string.Format("commission-based salaried employee {0}\n {1}:{2:C}; ", base.ToString(), "base salary", baseSalary);
+
+        }
+
+        public override void Update(int option, string newValue)
+        {
+            if(option == 5)
+            {
+                if (!decimal.TryParse(newValue, out baseSalary) || baseSalary <= 0)
+                    throw new Exception("Enter a valid base salary");
+                setBaseSalary(baseSalary);
+            }
+            base.Update(option, newValue);
+        }
+
     }
 }
