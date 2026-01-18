@@ -31,6 +31,8 @@ namespace SystemNomina.View
                         break;
 
                     case 2:
+                        ServicesEmployee.calculateSalaried();
+                        Console.Clear();
                         break;
 
                     case 3:
@@ -38,7 +40,6 @@ namespace SystemNomina.View
 
                     case 4:
                         Console.Clear();
-
                         break;
 
                 }
@@ -116,6 +117,7 @@ namespace SystemNomina.View
 
 
         }
+
 
 
         private decimal validateMoney()

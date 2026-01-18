@@ -20,6 +20,16 @@ namespace SystemNomina.Services
             if (employee == null) return false;
             return StorageEmployee.AddEmployee(employee);
         }
+        static public void calculateSalaried()
+        {
+            var em = StorageEmployee.employees();
+            if (em.Count() > 0)
+            {
+                em.ForEach(e => e.CalculateSalary());
+                Console.WriteLine("Calculation performed successfully");
+            }
+            else Console.WriteLine("No registered employees were found.");
+        }
 
 
 
