@@ -15,6 +15,9 @@ namespace SystemNomina.Models
                    this.numberSecuritySocial = numberSecuritySocial;
         }
 
+
+      
+
         public string getFirstName() =>  this.firstName;
         public void setFirstName(string firstName) {
                 if(firstName != null) this.firstName = firstName;
@@ -40,6 +43,15 @@ namespace SystemNomina.Models
 
         public abstract void Update(int option, string newValue);
 
+        public virtual Dictionary<int, string> GetEditableFields()
+        {
+            return new Dictionary<int, string>
+            {
+                {1, "First Name"},
+                {2, "Paternal Surname"}
+
+            };
+        }
 
     }
 }

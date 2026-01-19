@@ -40,22 +40,35 @@ namespace SystemNomina.Models
             return string.Format("Employee for hours: {0}\n {1}:{2:C}; {3}:{4:C}; ", base.ToString(), "Hourly wage", salaryHours, "hours worked", hoursWork);
         }
 
+
+        public override Dictionary<int, string> GetEditableFields()
+        {
+            var fields = base.GetEditableFields();
+            fields.Add(3, "Hours Worked");
+            fields.Add(4, "Hourly Wage");
+            return fields;
+        }
+
         public override void Update(int option, string newValue)
         {
             switch (option)
             {
                 case 1:
-                    setFirstName(newValue);
+                    this.setFirstName(newValue);
                     break;
                 case 2:
-                    setPartenalSurname(newValue);
+                    this.setPartenalSurname(newValue);
                     break;
                 case 3:
                     if (!double.TryParse(newValue, out double hour) || hour <= 0)
                         throw new Exception("The number of working hours is not valid");
-                    setHoursWork(hour);
+                    this.setHoursWork(hour);
                     break;
-
+                case 4:
+                    if (!decimal.TryParse(newValue, out decimal salary) || salary <= 0)
+                        throw new Exception("The income salary is not valid");
+                    this.setSalaryHours(salary);
+                    break;
                 default: throw new Exception("This option is not valid for this type of employee");
             }
         }

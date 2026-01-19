@@ -28,13 +28,21 @@ namespace SystemNomina.Models
 
         }
 
+
+        public override Dictionary<int, string> GetEditableFields()
+        {
+            var fields = base.GetEditableFields();
+            fields.Add(3, "Base Salary");
+            return fields;
+        }
+
         public override void Update(int option, string newValue)
         {
             if(option == 5)
             {
                 if (!decimal.TryParse(newValue, out baseSalary) || baseSalary <= 0)
                     throw new Exception("Enter a valid base salary");
-                setBaseSalary(baseSalary);
+                this.setBaseSalary(baseSalary);
             }
             base.Update(option, newValue);
         }

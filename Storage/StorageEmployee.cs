@@ -13,14 +13,14 @@ namespace SystemNomina.Storage
     public class StorageEmployee
     {
         static private List<Employee> _employees = new List<Employee>();
-        static public bool AddEmployee(Employee employee)
+        static public void AddEmployee(Employee employee)
         {
             if (_employees.Count() > 0)
             {
                 var existing = _employees.FirstOrDefault(e => e.getNumberSecuritySocial() == employee.getNumberSecuritySocial());
-                if (existing != null) return false;
+                if (existing != null) throw new Exception("An unexpected error occurred while adding the employee. Please try again later.") ;
             }
-            _employees.Add(employee); return true;
+            _employees.Add(employee);
         }
         static public List<Employee> employees()  => _employees;
         

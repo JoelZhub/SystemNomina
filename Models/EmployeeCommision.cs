@@ -35,25 +35,34 @@ namespace SystemNomina.Models
                 base.ToString(), "Gross Sales: ",  grossSales, "Commision rate: ", commissionFee );
         }
 
+
+        public override Dictionary<int, string> GetEditableFields()
+        {
+            var fields = base.GetEditableFields();
+            fields.Add(3, "Gross Sales");
+            fields.Add(4, "Commission Fee");
+            return fields;
+        }
+
         public override void Update(int option, string newValue)
         {
             switch (option) {
                 case 1:
-                    setFirstName(newValue);
+                    this.setFirstName(newValue);
                     break;
                 case 2:
-                    setPartenalSurname(newValue);
+                    this.setPartenalSurname(newValue);
                     break;
                 case 3:
                     if (!decimal.TryParse(newValue, out decimal grossSales) || grossSales <= 0)
                         throw new Exception("Invalid gross sales amount");
-                    setGrossSales(grossSales);
+                    this.setGrossSales(grossSales);
                     break;
 
                 case 4:
                     if (!decimal.TryParse(newValue, out decimal commissionFee) || commissionFee <= 0)
                         throw new Exception("Invalid commission fee amount");
-                    setCommissionFee(commissionFee);
+                    this.setCommissionFee(commissionFee);
                     break;
 
                 default: throw new Exception("This option is not valid for this type of employee");

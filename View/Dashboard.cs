@@ -16,15 +16,16 @@ namespace SystemNomina.View
             do {
 
              
-             Console.WriteLine("Payroll System \n \n" +
-              "1-Register employees \n\n " +
-              "2-Calculate employee pay \n\n " +
-              "3-Generar Reportes \n\n" +
-              "4-Close \n\n ");
+             Console.WriteLine("Payroll System \n\n" +
+              "1-Register employees \n" +
+              "2-Calculate employee pay \n " +
+              "3-Generar Reportes \n" +
+              "4-Close \n ");
 
         
                 Console.WriteLine("Enter a option: ");
                 opt = validateOption(Convert.ToInt32(Console.ReadLine()));
+                Console.WriteLine("\n");
 
                 switch (opt)
                 {
@@ -59,6 +60,7 @@ namespace SystemNomina.View
                 " \n 2. Update employee ");
 
             int opt = validateOption(Convert.ToInt32(Console.ReadLine()));
+            Console.WriteLine("\n");
             switch (opt) {
                 case 1:
                     registerEmployee();
@@ -77,24 +79,39 @@ namespace SystemNomina.View
         private void changeEmployye()
         {
             Console.WriteLine("Enter the SSN of the employee to be updated");
-            string nss = Console.ReadLine()!;
+            string nss = MaskEntrance.ReadMask();
+            Console.WriteLine("\n");
 
-            Console.WriteLine("Select the data to update");
-            Console.WriteLine("1. FirstName");
-            Console.WriteLine("2. Partenal Surname");
-            Console.WriteLine("3. Specific details of the type of employee");
+            Employee employee = ServicesEmployee.FindsNss(nss);
 
-            if(!int.TryParse(Console.ReadLine(), out int option))
-            {
-                Console.WriteLine("Invalid option");
+            if (employee == null) {
+                Console.WriteLine("Employee not found");
                 return;
             }
-            Console.WriteLine("Enter the new value");
-            string newValue =  Console.ReadLine()!;
+
+            Console.WriteLine($"Updating: {employee.getFirstName()} {employee.getPartenalSurname()}");
+            var fields = employee.GetEditableFields();
+
+            foreach (var field in fields)
+            {
+                Console.WriteLine($"{field.Key}. Update {field.Value}");
+            }
+            Console.WriteLine("0. Cancel");
+
+            if (!int.TryParse(Console.ReadLine(), out int option) || option == 0) return;
+
+            if (!fields.ContainsKey(option))
+            {
+                Console.WriteLine("Invalid option.");
+                return;
+            }
+            Console.WriteLine($"Enter new value for {fields[option]}:");
+            string newValue = Console.ReadLine()!;
 
             try
             {
-                
+                ServicesEmployee.changeEmployee(nss, option, newValue);
+                Console.WriteLine("Employee updated correctly \n");
             }
             catch (Exception ex)
             {
@@ -103,14 +120,15 @@ namespace SystemNomina.View
             }     
         
         }
-
         private void registerEmployee()
         {
             Console.WriteLine("Please indicate the type of employee to register.");
+
             Console.WriteLine("1-Salaried employee \n\n 2-Hourly employee\n\n " +
                 "3-Commission-based employee\n\n  4-Salaried commission-based employee\n\n ");
                 
             int opt = validateOption(Convert.ToInt32(Console.ReadLine())) ;
+            Console.WriteLine("\n");
 
             Console.WriteLine("Enter the employee's firstName");
             string firstName = Console.ReadLine()!.Trim();
@@ -118,54 +136,62 @@ namespace SystemNomina.View
             string paternalSurname = Console.ReadLine()!.Trim();
             Console.WriteLine("Enter the employee's social security number");
             string nss = MaskEntrance.ReadMask();
+            Console.WriteLine("\n");
 
             decimal salary = 0;
             decimal fee = 0;
             decimal grossS = 0;
 
-            switch (opt)
+            try
             {
-                case 1:
-                    Console.WriteLine("Enter the employee's weekly salary");
-                    salary = validateMoney();
-                    ServicesEmployee.addEmployee(new EmployeeSalaried(firstName, paternalSurname, nss, salary));
-                    Console.Clear();
-                    break;
-                 case 2:
-                    
-                    Console.WriteLine("Enter the number of hours the employee works");
-                    double hours = Convert.ToDouble(Console.ReadLine());
+                switch (opt)
+                {
+                    case 1:
+                        Console.WriteLine("Enter the employee's weekly salary");
+                        salary = validateMoney();
+                        ServicesEmployee.addEmployee(new EmployeeSalaried(firstName, paternalSurname, nss, salary));
+                        Console.Clear();
+                        break;
+                    case 2:
 
-                    Console.WriteLine("Enter the employee's hourly wage");
-                    salary = validateMoney();
+                        Console.WriteLine("Enter the number of hours the employee works");
+                        double hours = Convert.ToDouble(Console.ReadLine());
 
-                    ServicesEmployee.addEmployee(new EmployeeHours(firstName, paternalSurname, nss, hours, salary));
-                    break;
+                        Console.WriteLine("Enter the employee's hourly wage");
+                        salary = validateMoney();
 
-                case 3:
-                    Console.WriteLine("Enter the employee's gross sales");
-                    grossS = validateMoney();
+                        ServicesEmployee.addEmployee(new EmployeeHours(firstName, paternalSurname, nss, hours, salary));
+                        break;
 
-                    Console.WriteLine("Enter the employee commission rate");
-                    fee = validateMoney();
+                    case 3:
+                        Console.WriteLine("Enter the employee's gross sales");
+                        grossS = validateMoney();
 
-                    ServicesEmployee.addEmployee(new EmployeeCommision(firstName, paternalSurname, nss, grossS, fee));
+                        Console.WriteLine("Enter the employee commission rate");
+                        fee = validateMoney();
 
-                    break;
+                        ServicesEmployee.addEmployee(new EmployeeCommision(firstName, paternalSurname, nss, grossS, fee));
 
-                case 4:
+                        break;
 
-                    Console.WriteLine("Enter the employee's base salary");
-                    salary = validateMoney();
+                    case 4:
 
-                    Console.WriteLine("Enter the employee's gross sales");
-                    grossS = validateMoney();
+                        Console.WriteLine("Enter the employee's base salary");
+                        salary = validateMoney();
 
-                    Console.WriteLine("Enter the employee commission rate");
-                    fee = validateMoney();
-                    ServicesEmployee.addEmployee(new EmployeeSalariedCommision(firstName, paternalSurname, nss, grossS, fee, salary));
-                    break;
+                        Console.WriteLine("Enter the employee's gross sales");
+                        grossS = validateMoney();
 
+                        Console.WriteLine("Enter the employee commission rate");
+                        fee = validateMoney();
+                        ServicesEmployee.addEmployee(new EmployeeSalariedCommision(firstName, paternalSurname, nss, grossS, fee, salary));
+                        break;
+
+                }
+
+            }
+            catch (Exception e) {
+                Console.WriteLine($"Error: {e.Message}");
             }
 
 

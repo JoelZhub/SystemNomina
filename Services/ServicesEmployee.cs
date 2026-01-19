@@ -17,10 +17,11 @@ namespace SystemNomina.Services
     {
 
         
-        static public bool addEmployee(Employee employee)
+        static public void addEmployee(Employee employee)
         {
-            if (employee == null) return false;
-            return StorageEmployee.AddEmployee(employee);
+            var em = FindsNss(employee.getNumberSecuritySocial());
+            if (em != null ) throw new Exception("This employee already exists");
+            StorageEmployee.AddEmployee(employee);
         }
         static public void calculateSalaried()
         {
@@ -37,13 +38,15 @@ namespace SystemNomina.Services
         {
             Reports reports = new Reports();
             reports.createReport();
-    }
+         }
+
+        static public Employee FindsNss(string nss)  => StorageEmployee.employees().Find(e => e.getNumberSecuritySocial() == nss);
 
         static public void changeEmployee(string nss, int option, string newVa)
         {
-            var employee = StorageEmployee.employees().Find(e => e.getNumberSecuritySocial() == nss);
+            var employee = FindsNss(nss);
             if (employee == null) {
-                throw new Exception("Employee not found");
+                throw new Exception("\n Employee not found");
             }
             employee.Update(option, newVa);
 
